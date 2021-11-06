@@ -1,0 +1,6 @@
+package com.example.exercice_fb_clone
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
