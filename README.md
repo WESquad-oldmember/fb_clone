@@ -1,4 +1,4 @@
-# exercice_fb_clone
+# fb_clone
 
 This is a simplified (non-functional) clone of Facebook app, in order to discover basic widgets.
 
