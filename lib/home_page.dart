@@ -132,8 +132,8 @@ class HomePage extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
-          children: [
-            const Post(
+          children: const [
+            Post(
                 posterImage: "assets/images/black_cat.jpg",
                 posterName: "Black Panther",
                 hoursSincePosted: 1,
@@ -141,7 +141,7 @@ class HomePage extends StatelessWidget {
                 description: "Just chilling on the lake!",
                 likes: 7,
                 comments: 2),
-            const Post(
+            Post(
                 posterImage: "assets/images/black_cat.jpg",
                 posterName: "Black Panther",
                 hoursSincePosted: 5,
@@ -149,7 +149,7 @@ class HomePage extends StatelessWidget {
                 description: "Working on my tan...",
                 likes: 142,
                 comments: 61),
-            const Post(
+            Post(
                 posterImage: "assets/images/black_cat.jpg",
                 posterName: "Black Panther",
                 hoursSincePosted: 12,
@@ -157,7 +157,7 @@ class HomePage extends StatelessWidget {
                 description: "Had a blast chasing all those lights!",
                 likes: 192,
                 comments: 23),
-            const Post(
+            Post(
                 posterImage: "assets/images/tuto/duck.jpg",
                 posterName: "Duck Norris",
                 hoursSincePosted: 18,
