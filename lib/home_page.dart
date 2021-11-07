@@ -1,8 +1,22 @@
 import 'package:exercice_fb_clone/login_page.dart';
+import 'package:exercice_fb_clone/models/album_model.dart';
+import 'package:exercice_fb_clone/services/http_service.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late Future<List<Album>> _albums;
+  @override
+  void initState() {
+    super.initState();
+    _albums = HttpService.fetchAlbums();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,18 +88,20 @@ class HomePage extends StatelessWidget {
     );
 
     Padding aboutMeSection = Padding(
-      padding: const EdgeInsets.all(16),
-      child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-        Text(
-          "A propos de moi",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        AboutMeSectionRow(icon: Icons.home, text: "Ma cabane au Canada"),
-        AboutMeSectionRow(icon: Icons.work, text: "Bûcheron au Sahara"),
-        AboutMeSectionRow(icon: Icons.favorite, text: "Célibataire"),
-      ]),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text(
+            "A propos de moi",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          AboutMeSectionRow(icon: Icons.home, text: "Ma cabane au Canada"),
+          AboutMeSectionRow(icon: Icons.work, text: "Bûcheron au Sahara"),
+          AboutMeSectionRow(icon: Icons.favorite, text: "Célibataire"),
+        ],
+      ),
     );
 
     Column friendsSection = Column(
@@ -120,57 +136,106 @@ class HomePage extends StatelessWidget {
       ],
     );
 
-    var postsSection =
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          "Actualités",
-          style: TextStyle(fontWeight: FontWeight.bold),
+    Column postsSection = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "Actualités",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-      const SizedBox(height: 8),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: const [
-            Post(
-                posterImage: "assets/images/black_cat.jpg",
-                posterName: "Black Panther",
-                hoursSincePosted: 1,
-                postImage: "assets/images/hintersee.jpg",
-                description: "Just chilling on the lake!",
-                likes: 7,
-                comments: 2),
-            Post(
-                posterImage: "assets/images/black_cat.jpg",
-                posterName: "Black Panther",
-                hoursSincePosted: 5,
-                postImage: "assets/images/tuto/playa.jpg",
-                description: "Working on my tan...",
-                likes: 142,
-                comments: 61),
-            Post(
-                posterImage: "assets/images/black_cat.jpg",
-                posterName: "Black Panther",
-                hoursSincePosted: 12,
-                postImage: "assets/images/tuto/carnaval.jpg",
-                description: "Had a blast chasing all those lights!",
-                likes: 192,
-                comments: 23),
-            Post(
-                posterImage: "assets/images/tuto/duck.jpg",
-                posterName: "Duck Norris",
-                hoursSincePosted: 18,
-                postImage: "assets/images/tuto/mountain.jpg",
-                description:
-                    "Fresh air is cool but there are no ponds here, only frozen water... brrr",
-                likes: 79,
-                comments: 17),
-          ],
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: const [
+              Post(
+                  posterImage: "assets/images/black_cat.jpg",
+                  posterName: "Black Panther",
+                  hoursSincePosted: 1,
+                  postImage: "assets/images/hintersee.jpg",
+                  description: "Just chilling on the lake!",
+                  likes: 7,
+                  comments: 2),
+              Post(
+                  posterImage: "assets/images/black_cat.jpg",
+                  posterName: "Black Panther",
+                  hoursSincePosted: 5,
+                  postImage: "assets/images/tuto/playa.jpg",
+                  description: "Working on my tan...",
+                  likes: 142,
+                  comments: 61),
+              Post(
+                  posterImage: "assets/images/black_cat.jpg",
+                  posterName: "Black Panther",
+                  hoursSincePosted: 12,
+                  postImage: "assets/images/tuto/carnaval.jpg",
+                  description: "Had a blast chasing all those lights!",
+                  likes: 192,
+                  comments: 23),
+              Post(
+                  posterImage: "assets/images/tuto/duck.jpg",
+                  posterName: "Duck Norris",
+                  hoursSincePosted: 18,
+                  postImage: "assets/images/tuto/mountain.jpg",
+                  description:
+                      "Fresh air is cool but there are no ponds here, only frozen water... brrr",
+                  likes: 79,
+                  comments: 17),
+            ],
+          ),
         ),
-      ),
-    ]);
+      ],
+    );
+
+    var albumsSection = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Derniers albums",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              FutureBuilder(
+                  future: _albums,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Album> albums =
+                          (snapshot.data as List<Album>).sublist(0, 3);
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var album in albums) AlbumWidget(album: album),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text("Albums suivants"),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("${snapshot.error}"),
+                        ),
+                      );
+                      return Text("${snapshot.error}");
+                    }
+
+                    return const CircularProgressIndicator();
+                  }),
+            ],
+          ),
+        ),
+      ],
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -200,15 +265,51 @@ class HomePage extends StatelessWidget {
             headerStack,
             personalDescription,
             editButtonsBar,
+            const SizedBox(height: 16),
             const Divider(),
             aboutMeSection,
+            const SizedBox(height: 16),
             const Divider(),
             friendsSection,
+            const SizedBox(height: 16),
+            const Divider(),
+            albumsSection,
+            const SizedBox(height: 16),
             const Divider(),
             postsSection
           ],
         ),
       ),
+    );
+  }
+}
+
+class AlbumWidget extends StatelessWidget {
+  final Album album;
+
+  const AlbumWidget({Key? key, required this.album}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            InkWell(
+              child: Text(
+                album.title,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+      ],
     );
   }
 }
