@@ -1,6 +1,5 @@
+import 'package:exercice_fb_clone/login_page.dart';
 import 'package:flutter/material.dart';
-
-import 'home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Basics',
+      title: 'Clonebook',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }

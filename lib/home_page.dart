@@ -1,3 +1,4 @@
+import 'package:exercice_fb_clone/login_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -173,7 +174,24 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basics'),
+        title: const Text('Clonebook'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Bye bye! Seen you soon 👋"),
+                ),
+              );
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ));
+            },
+            icon: const Icon(Icons.logout),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 16),
